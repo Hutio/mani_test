@@ -79,7 +79,7 @@ def Dynamixel_Ping(DXL_ID):
 
 class Dynamixel_Motor_control:
 
-    def __init__(self,connected_motor):
+    def __init__(self,connected_motor,LEN_MOTOR_SCAN):
         A = 0
 
     def Write_motor(DXL_ID, spd, sec):
