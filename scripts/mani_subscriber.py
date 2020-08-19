@@ -102,7 +102,7 @@ class Dynamixel_Motor_control:
 
     def Sync_write(self, Mdata):
         for m in self.conconnected_motor:
-            self.Write_motor(m,self.Mdata[1][m],self.Mdata[2][m])
+            self.Write_motor(self.Mdata[1][m],self.Mdata[2][m])
             timer = threading.Timer(self.Mdata[3][m],self.Stop_motor(self.Mdata[1][m]))
             timer.start()
 
