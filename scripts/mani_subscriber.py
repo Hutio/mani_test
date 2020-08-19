@@ -163,7 +163,8 @@ if __name__ == '__main__':
 #    dmc.Write_motor(2,300,3)
 #    dmc.Write_motor(3,1324,3)
     dmc.Sync_write(Mdata)
-    dmc.Motor_disable()
     time.sleep(10)
+    dmc.Motor_disable()
+
     Dynamixel_Close_port()
     print("Successfully Node Closed")
