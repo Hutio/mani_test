@@ -79,8 +79,10 @@ def Dynamixel_Ping(DXL_ID):
 
 class Dynamixel_Motor_control:
 
-    def __init__(self):
-        pass
+    def __init__(self,connected_motor,LEN_MOTOR_SCAN):
+
+        self.conconnected_motor = connected_motor
+        self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 
     def Write_motor(DXL_ID, spd, sec):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, spd)
@@ -110,13 +112,13 @@ class Dynamixel_Motor_control:
             Dynamixel_Light_disable(DXL_ID)
 
     def Motor_enable(self):
-        for i in range(LEN_MOTOR_SCAN):
+        for i in range(self.LEN_MOTOR_SCAN):
             Dynamixel_Ping(i)
             Torque_enable(i)
-        print("Motor [" + ','.join(map(str,conconnected_motor)) + "] successfully connected")
+        print("Motor [" + ','.join(map(str,self.conconnected_motor)) + "] successfully connected")
 
     def Motor_disable(self):
-        for i in range(len(conconnected_motor)):
+        for i in range(len(self.conconnected_motor)):
             Torque_disable(i)
 
 def Dynamixel_Close_port():
@@ -140,7 +142,7 @@ if __name__ == '__main__':
     Dynamixel_Open_port()
     Dynamixel_Set_baudrate()
 
-    dmc = Dynamixel_Motor_control()
+    dmc = Dynamixel_Motor_control(connected_motor,LEN_MOTOR_SCAN)
 
     dmc.Motor_enable()
 #   listener()
