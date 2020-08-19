@@ -119,7 +119,7 @@ class Dynamixel_Motor_control:
 
     def Motor_disable(self):
         for i in range(len(self.conconnected_motor)):
-            Torque_disable(i)
+            self.Torque_disable(i)
 
 def Dynamixel_Close_port():
     portHandler.closePort()
