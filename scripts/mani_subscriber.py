@@ -101,9 +101,12 @@ class Dynamixel_Motor_control:
 #------------------------------sync drive-------------------------------------#
 
     def Sync_write(self, Mdata):
-        for q in self.connected_motor:
-            print("%d" % self.Mdata[0][q])
-            globals()['th_{}'.format(q)] = Thread(target=self.Write_motor, args=(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q]))
+#        for q in self.connected_motor:
+#            globals()['th_{}'.format(q)] = Thread(target=self.Write_motor, args=(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q]))
+            th_0 = Thread(target=self.Write_motor, args=(self.Mdata[0][0], self.Mdata[1][0], self.Mdata[2][0]))
+            th_1 = Thread(target=self.Write_motor, args=(self.Mdata[0][1], self.Mdata[1][1], self.Mdata[2][1]))
+            th_2 = Thread(target=self.Write_motor, args=(self.Mdata[0][2], self.Mdata[1][2], self.Mdata[2][2]))
+            th_3 = Thread(target=self.Write_motor, args=(self.Mdata[0][3], self.Mdata[1][3], self.Mdata[2][3]))
             th_0.start()
             th_1.start()
             th_2.start()
