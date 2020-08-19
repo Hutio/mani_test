@@ -77,7 +77,7 @@ class Dynamixel_Motor_control:
 
     def __init__(self, connected_motor, LEN_MOTOR_SCAN, Mdata):
         self.Mdata = Mdata
-        self.conconnected_motor = connected_motor
+        self.connected_motor = connected_motor
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 
 #----------------------------only sequential ---------------------------------#
@@ -101,11 +101,11 @@ class Dynamixel_Motor_control:
 #------------------------------sync drive-------------------------------------#
 
     def Sync_write(self, Mdata):
-        for q in self.conconnected_motor:
+        for q in self.connected_motor:
             globals()['th_{}'.format(q)] = Thread(target=self.Write_motor, args=(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q]))
         for w in self.connected_motor:
             globals()['th_{}'.format(w)].start()
-        for e in self.conconnected_motor:
+        for e in self.connected_motor:
             globals()['th_{}'.format(e)].join()
 
 #-----------------------------------------------------------------------------#
@@ -131,10 +131,10 @@ class Dynamixel_Motor_control:
         for i in range(self.LEN_MOTOR_SCAN):
             Dynamixel_Ping(i)
             self.Torque_enable(i)
-        print("Motor [" + ','.join(map(str,self.conconnected_motor)) + "] successfully connected")
+        print("Motor [" + ','.join(map(str,self.connected_motor)) + "] successfully connected")
 
     def Motor_disable(self):
-        for i in self.conconnected_motor:
+        for i in self.connected_motor:
             self.Torque_disable(i)
 
 def Dynamixel_Close_port():
