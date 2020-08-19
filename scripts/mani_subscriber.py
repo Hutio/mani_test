@@ -80,7 +80,7 @@ def Dynamixel_Ping(DXL_ID):
 class Dynamixel_Motor_control:
 
     def __init__(self):
-
+        pass
 
     def Write_motor(DXL_ID, spd, sec):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, spd)
