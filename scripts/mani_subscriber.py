@@ -159,13 +159,13 @@ if __name__ == '__main__':
     dmc = Dynamixel_Motor_control(connected_motor,LEN_MOTOR_SCAN, Mdata)
 
     dmc.Motor_enable()
-#   listener()
+#    listener()
 #    dmc.Write_motor(0,300,3)
 #    dmc.Write_motor(1,1324,3)
 #    dmc.Write_motor(2,300,3)
 #    dmc.Write_motor(3,1324,3)
     dmc.Sync_write(Mdata)
-
+    time.sleep(10)
     dmc.Motor_disable()
 
     Dynamixel_Close_port()
