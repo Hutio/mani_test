@@ -3,7 +3,7 @@
 
 #----------------------------------Lib----------------------------------------#
 import rospy
-import threading
+from threading import Thread
 from std_msgs.msg import Float32MultiArray
 from dynamixel_sdk import *
 
@@ -81,14 +81,13 @@ class Dynamixel_Motor_control:
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 
 #----------------------------only sequential ---------------------------------#
-    def Write_motor(self, DXL_ID, spd):
+    def Write_motor(self, DXL_ID, spd, sec):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, spd)
         if dxl_comm_result != COMM_SUCCESS:
             print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
         elif dxl_error != 0:
             print("%s" % packetHandler.getRxPacketError(dxl_error))
-
-    def Stop_motor(self, DXL_ID):
+        time.sleep(sec)
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
 
     def Read_motor(DXL_ID):
@@ -102,11 +101,12 @@ class Dynamixel_Motor_control:
 #------------------------------sync drive-------------------------------------#
 
     def Sync_write(self, Mdata):
-        for m in self.conconnected_motor:
-            self.Write_motor(self.Mdata[0][m],self.Mdata[1][m])
-            globals()['timer_{}'.format(m)] = threading.Timer(self.Mdata[2][m],self.Stop_motor(self.Mdata[0][m]))
-            globals()['timer_{}'.format(m)].start()
-            globals()['timer_{}'.format(m)].join()
+        for q in self.conconnected_motor:
+            globals()['th_{}'.format(q)] = Thread(target=self.Write_motor, args=(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q]))
+        for w in self.connected_motor:
+            globals()['th_{}'.format(w)].start()
+        for e in self.conconnected_motor:
+            globals()['th_{}'.format(e)].join()
 
 #-----------------------------------------------------------------------------#
     def Torque_enable(self, DXL_ID):
