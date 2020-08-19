@@ -142,7 +142,7 @@ if __name__ == '__main__':
     Dynamixel_Open_port()
     Dynamixel_Set_baudrate()
 
-    dmc = Dynamixel_Motor_control(connected_motor,LEN_MOTOR_SCAN)
+    dmc = Dynamixel_Motor_control()
 
     dmc.Motor_enable()
 #   listener()
