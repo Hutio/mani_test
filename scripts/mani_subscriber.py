@@ -104,10 +104,18 @@ class Dynamixel_Motor_control:
         for q in self.connected_motor:
             print("%d" % self.Mdata[0][q])
             globals()['th_{}'.format(q)] = Thread(target=self.Write_motor, args=(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q]))
-        for w in self.connected_motor:
-            globals()['th_{}'.format(w)].start()
-        for e in self.connected_motor:
-            globals()['th_{}'.format(e)].join()
+            th_0.start()
+            th_1.start()
+            th_2.start()
+            th_3.start()
+            th_0.join()
+            th_1.join()
+            th_2.join()
+            th_3.join()
+#        for w in self.connected_motor:
+#            globals()['th_{}'.format(w)].start()
+#        for e in self.connected_motor:
+#            globals()['th_{}'.format(e)].join()
 
 #-----------------------------------------------------------------------------#
     def Torque_enable(self, DXL_ID):
