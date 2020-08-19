@@ -80,14 +80,12 @@ class Dynamixel_Motor_control:
         self.conconnected_motor = connected_motor
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 #----------------------------only sequential ---------------------------------#
-    def Write_motor(self, DXL_ID, spd, sec):
+    def Write_motor(self, DXL_ID, spd):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, spd)
         if dxl_comm_result != COMM_SUCCESS:
             print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
         elif dxl_error != 0:
             print("%s" % packetHandler.getRxPacketError(dxl_error))
-        time.sleep(sec)
-        self.Stop_motor()
 
     def Stop_motor(self, DXL_ID):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
@@ -102,21 +100,11 @@ class Dynamixel_Motor_control:
         print("[ID:%03d] PresSpd:%03d" % (DXL_ID,dxl_present_speed))
 #------------------------------sync drive-------------------------------------#
 
-    def Sync_write(self, DXL_ID, Mdata):
-        for m in range(self.conconnected_motor):
-            timer = threading.Timer(Mdata[3][m],self.Stop_motor())
+    def Sync_write(self, Mdata):
+        for m in self.conconnected_motor:
+            self.Write_motor(m,self.Mdata[1][m],self.Mdata[2][m])
+            timer = threading.Timer(self.Mdata[3][m],self.Stop_motor(self.Mdata[1][m]))
             timer.start()
-
-
-
-
-
-
-
-
-
-
-
 
 #-----------------------------------------------------------------------------#
     def Torque_enable(self, DXL_ID):
@@ -144,7 +132,7 @@ class Dynamixel_Motor_control:
         print("Motor [" + ','.join(map(str,self.conconnected_motor)) + "] successfully connected")
 
     def Motor_disable(self):
-        for i in range(len(self.conconnected_motor)):
+        for i in self.conconnected_motor:
             self.Torque_disable(i)
 
 def Dynamixel_Close_port():
@@ -176,7 +164,7 @@ if __name__ == '__main__':
 #    dmc.Write_motor(1,1324,3)
 #    dmc.Write_motor(2,300,3)
 #    dmc.Write_motor(3,1324,3)
-    dmc.Sync_write()
+    dmc.Sync_write(Mdata)
 
     dmc.Motor_disable()
 
