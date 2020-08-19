@@ -114,7 +114,7 @@ class Dynamixel_Motor_control:
     def Motor_enable(self):
         for i in range(self.LEN_MOTOR_SCAN):
             Dynamixel_Ping(i)
-            Torque_enable(i)
+            self.Torque_enable(i)
         print("Motor [" + ','.join(map(str,self.conconnected_motor)) + "] successfully connected")
 
     def Motor_disable(self):
