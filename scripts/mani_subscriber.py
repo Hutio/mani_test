@@ -81,14 +81,14 @@ class Dynamixel_Motor_control:
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 
 #----------------------------only sequential ---------------------------------#
-    def Write_motor(self, DXL_ID, spd, sec):
+    def Write_motor(self, DXL_ID, spd):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, spd)
         if dxl_comm_result != COMM_SUCCESS:
             print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
         elif dxl_error != 0:
             print("%s" % packetHandler.getRxPacketError(dxl_error))
-        time.sleep(sec)
-        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
+#        time.sleep(sec)
+#        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
 
     def Read_motor(DXL_ID):
         dxl_present_speed, dxl_comm_result, dxl_error = packetHandler.read2ByteTxRx(portHandler, DXL_ID, ADDR_AX_PRESENT_SPEED)
