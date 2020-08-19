@@ -1,8 +1,9 @@
 
 #!/usr/bin/env python3
 
-#-----------------------------------------------------------------------------#
+#----------------------------------Lib----------------------------------------#
 import rospy
+import threading
 from std_msgs.msg import Float32MultiArray
 from dynamixel_sdk import *
 
@@ -14,7 +15,11 @@ BAUDRATE                   = 1000000
 DEVICENAME                 = '/dev/ttyUSB0'
 LEN_MOTOR_SCAN             = 4
 
-
+Mdata = [
+         [0,1,2,3], #Motor number
+         [300,1324,300,1324], #Motor speed
+         [3,3,3,3] #Motor duration
+         ]
 
 #--------------------------------Don't touch----------------------------------#
 # Motor Address
@@ -70,8 +75,8 @@ def Dynamixel_Ping(DXL_ID):
 
 class Dynamixel_Motor_control:
 
-    def __init__(self,connected_motor,LEN_MOTOR_SCAN):
-
+    def __init__(self, connected_motor, LEN_MOTOR_SCAN, Mdata):
+        self.Mdata = Mdata
         self.conconnected_motor = connected_motor
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 #----------------------------only sequential ---------------------------------#
@@ -82,6 +87,9 @@ class Dynamixel_Motor_control:
         elif dxl_error != 0:
             print("%s" % packetHandler.getRxPacketError(dxl_error))
         time.sleep(sec)
+        self.Stop_motor()
+
+    def Stop_motor(self, DXL_ID):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
 
     def Read_motor(DXL_ID):
@@ -94,6 +102,10 @@ class Dynamixel_Motor_control:
         print("[ID:%03d] PresSpd:%03d" % (DXL_ID,dxl_present_speed))
 #------------------------------sync drive-------------------------------------#
 
+    def Sync_write(self, DXL_ID, Mdata):
+        for m in range(self.conconnected_motor):
+            timer = threading.Timer(Mdata[3][m],self.Stop_motor())
+            timer.start()
 
 
 
@@ -156,14 +168,15 @@ if __name__ == '__main__':
     Dynamixel_Open_port()
     Dynamixel_Set_baudrate()
 
-    dmc = Dynamixel_Motor_control(connected_motor,LEN_MOTOR_SCAN)
+    dmc = Dynamixel_Motor_control(connected_motor,LEN_MOTOR_SCAN, Mdata)
 
     dmc.Motor_enable()
 #   listener()
-    dmc.Write_motor(0,300,3)
-    dmc.Write_motor(1,1324,3)
-    dmc.Write_motor(2,300,3)
-    dmc.Write_motor(3,1324,3)
+#    dmc.Write_motor(0,300,3)
+#    dmc.Write_motor(1,1324,3)
+#    dmc.Write_motor(2,300,3)
+#    dmc.Write_motor(3,1324,3)
+    dmc.Sync_write()
 
     dmc.Motor_disable()
 
