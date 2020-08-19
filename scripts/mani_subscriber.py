@@ -1,5 +1,5 @@
 
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #-----------------------------------------------------------------------------#
 import rospy
@@ -80,6 +80,7 @@ def Dynamixel_Ping(DXL_ID):
 class Dynamixel_Motor_control:
 
     def __init__(self,connected_motor,LEN_MOTOR_SCAN):
+
         self.conconnected_motor = connected_motor
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 
