@@ -109,7 +109,7 @@ class Dynamixel_Motor_control:
         else:
             Dynamixel_Light_disable(DXL_ID)
 
-    def Motor_enable():
+    def Motor_enable(LEN_MOTOR_SCAN):
         for i in range(LEN_MOTOR_SCAN):
             Dynamixel_Ping(i)
             Torque_enable(i)
