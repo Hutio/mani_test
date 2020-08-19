@@ -102,6 +102,7 @@ class Dynamixel_Motor_control:
 
     def Sync_write(self, Mdata):
         for q in self.connected_motor:
+            print("%d" % self.Mdata[0][q])
             globals()['th_{}'.format(q)] = Thread(target=self.Write_motor, args=(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q]))
         for w in self.connected_motor:
             globals()['th_{}'.format(w)].start()
