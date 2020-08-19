@@ -111,13 +111,13 @@ class Dynamixel_Motor_control:
         else:
             Dynamixel_Light_disable(DXL_ID)
 
-    def Motor_enable(LEN_MOTOR_SCAN):
+    def Motor_enable(self):
         for i in range(self.LEN_MOTOR_SCAN):
             Dynamixel_Ping(i)
             Torque_enable(i)
         print("Motor [" + ','.join(map(str,self.conconnected_motor)) + "] successfully connected")
 
-    def Motor_disable():
+    def Motor_disable(self):
         for i in range(len(self.conconnected_motor)):
             Torque_disable(i)
 
