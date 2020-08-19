@@ -84,7 +84,7 @@ class Dynamixel_Motor_control:
         self.conconnected_motor = connected_motor
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 
-    def Write_motor(DXL_ID, spd, sec):
+    def Write_motor(self, DXL_ID, spd, sec):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, spd)
         if dxl_comm_result != COMM_SUCCESS:
             print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
@@ -93,7 +93,7 @@ class Dynamixel_Motor_control:
         time.sleep(sec)
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
 
-    def Torque_enable(DXL_ID):
+    def Torque_enable(self, DXL_ID):
         dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_AX_TORQUE_ENABLE, DXL_ENABLE)
         if dxl_comm_result != COMM_SUCCESS:
             print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
@@ -102,7 +102,7 @@ class Dynamixel_Motor_control:
         else:
             Dynamixel_Light_enable(DXL_ID)
 
-    def Torque_disable(DXL_ID):
+    def Torque_disable(self, DXL_ID):
         dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_AX_TORQUE_ENABLE, DXL_DISABLE)
         if dxl_comm_result != COMM_SUCCESS:
             print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
