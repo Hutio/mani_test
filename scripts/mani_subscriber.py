@@ -101,24 +101,8 @@ class Dynamixel_Motor_control:
 #------------------------------sync drive-------------------------------------#
 
     def Sync_write(self, Mdata):
-#        for q in self.connected_motor:
-#            globals()['th_{}'.format(q)] = Thread(target=self.Write_motor, args=(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q]))
-            th_0 = Thread(target=self.Write_motor, args=(self.Mdata[0][0], self.Mdata[1][0], self.Mdata[2][0]))
-            th_1 = Thread(target=self.Write_motor, args=(self.Mdata[0][1], self.Mdata[1][1], self.Mdata[2][1]))
-            th_2 = Thread(target=self.Write_motor, args=(self.Mdata[0][2], self.Mdata[1][2], self.Mdata[2][2]))
-            th_3 = Thread(target=self.Write_motor, args=(self.Mdata[0][3], self.Mdata[1][3], self.Mdata[2][3]))
-            th_0.start()
-            th_1.start()
-            th_2.start()
-            th_3.start()
-            th_0.join()
-            th_1.join()
-            th_2.join()
-            th_3.join()
-#        for w in self.connected_motor:
-#            globals()['th_{}'.format(w)].start()
-#        for e in self.connected_motor:
-#            globals()['th_{}'.format(e)].join()
+        for q in self.connected_motor:
+            self.Write_motor(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q])
 
 #-----------------------------------------------------------------------------#
     def Torque_enable(self, DXL_ID):
@@ -179,7 +163,6 @@ if __name__ == '__main__':
 #    dmc.Write_motor(2,300,3)
 #    dmc.Write_motor(3,1324,3)
     dmc.Sync_write(Mdata)
-    time.sleep(10)
     dmc.Motor_disable()
 
     Dynamixel_Close_port()
