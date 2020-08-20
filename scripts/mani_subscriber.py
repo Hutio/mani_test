@@ -1,5 +1,5 @@
 
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 #----------------------------------Lib----------------------------------------#
 import rospy
@@ -18,7 +18,7 @@ LEN_MOTOR_SCAN             = 4
 Mdata = [
          [0,1,2,3], #Motor number
          [300,1324,300,1324], #Motor speed
-         [3,3,3,3] #Motor duration
+         [5,10,15,20] #Motor duration
          ]
 
 #--------------------------------Don't touch----------------------------------#
@@ -109,6 +109,7 @@ class Dynamixel_Motor_control:
         for w in self.connected_motor]
 
         for t in ts:
+            print("t")
             t.start()
         for t in ts:
             t.join()
