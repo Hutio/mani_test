@@ -97,7 +97,7 @@ class Dynamixel_Motor_control:
 #------------------------------sync drive-------------------------------------#
 
     def Sync_write(self, Mdata):
-        pl = [Process(target=self.Write_motor, args=(msg_id[q], msg_spd[q], msg_sec[q])) for q in self.connected_motor]
+        pl = [Process(target=self.Write_motor, args=(msg.id[q], msg.spd[q], msg.sec[q])) for q in self.connected_motor]
         for w in pl:
             w.start()
         for w in pl:
@@ -135,9 +135,6 @@ def Dynamixel_Close_port():
     portHandler.closePort()
 
 def callback(msg):
-    msg_id = msg.id
-    msg_spd = msg.speed
-    msg_sec = msg.second
     rospy.loginfo(rospy.get_caller_id() + "I heard %s", msg)
     dmc.Sync_write(msg)
 
