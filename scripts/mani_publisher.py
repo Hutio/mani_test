@@ -44,7 +44,7 @@ msg = Mdata()
 def talker():
     pub = rospy.Publisher("Motor_data", Mdata, queue_size=1)
     rospy.init_node('mani_test_publisher', anonymous=False)
-    rate = rospy.Rate(10) # 10hz
+    rate = rospy.Rate(0.1) # 10hz
     while not rospy.is_shutdown():
 
         msg.id      = [0,1,2,3]
