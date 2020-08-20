@@ -29,7 +29,6 @@ DXL_DISABLE                = 0
 connected_motor = []
 portHandler = PortHandler(DEVICENAME)
 packetHandler = PacketHandler(PROTOCOL_VERSION)
-msg = Mdata()
 #-----------------------------------------------------------------------------#
 
 def Dynamixel_Open_port():
@@ -96,7 +95,7 @@ class Dynamixel_Motor_control:
         print("[ID:%03d] PresSpd:%03d" % (DXL_ID,dxl_present_speed))
 #------------------------------sync drive-------------------------------------#
 
-    def Sync_write(self, Mdata):
+    def Sync_write(self, msg):
         pl = [Process(target=self.Write_motor, args=(msg.id[q], msg.spd[q], msg.sec[q])) for q in self.connected_motor]
         for w in pl:
             w.start()
