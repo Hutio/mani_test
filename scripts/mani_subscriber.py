@@ -145,12 +145,13 @@ def Dynamixel_Close_port():
 def callback(data):
     msg = data.data
     rospy.loginfo(rospy.get_caller_id() + "I heard %s", msg)
+    dmc.Sync_write(msg)
 
 def listener():
 
     rospy.init_node('mani_test_listener', anonymous=False)
 
-    rospy.Subscriber("Motor_Information", Float32MultiArray, callback)
+    rospy.Subscriber("Motor_data", Float32MultiArray, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
@@ -163,9 +164,10 @@ if __name__ == '__main__':
     dmc = Dynamixel_Motor_control(connected_motor,LEN_MOTOR_SCAN, Mdata)
 
     dmc.Motor_enable()
-#    listener()
 
-    dmc.Sync_write(Mdata)
+    listener()
+
+#    dmc.Sync_write(Mdata)
 
     dmc.Motor_disable()
 
