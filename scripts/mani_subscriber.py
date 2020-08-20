@@ -3,7 +3,6 @@
 
 #----------------------------------Lib----------------------------------------#
 import rospy
-import threading
 from multiprocessing import Process
 from std_msgs.msg import Float32MultiArray
 from dynamixel_sdk import *
@@ -18,8 +17,8 @@ LEN_MOTOR_SCAN             = 4
 
 Mdata = [
          [0,1,2,3], #Motor number
-         [300,1324,300,1324], #Motor speed
-         [5,10,15,20] #Motor duration
+         [500,1324,300,1524], #Motor speed
+         [1,2,3,4] #Motor duration
          ]
 
 #--------------------------------Don't touch----------------------------------#
@@ -91,9 +90,6 @@ class Dynamixel_Motor_control:
         time.sleep(sec)
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
 
-    def Stop_motor(self, DXL_ID):
-        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
-
     def Read_motor(DXL_ID):
         dxl_present_speed, dxl_comm_result, dxl_error = packetHandler.read2ByteTxRx(portHandler, DXL_ID, ADDR_AX_PRESENT_SPEED)
         if dxl_comm_result != COMM_SUCCESS:
@@ -107,13 +103,7 @@ class Dynamixel_Motor_control:
     def Sync_write(self, Mdata):
         for q in self.connected_motor:
             Process(target=self.Write_motor(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q])).start()
-#        ts = [threading.Timer(self.Mdata[2][w], self.Stop_motor(w))\
-#        for w in self.connected_motor]
-#        for t in ts:
-#            print(t)
-#            t.start()
-#        for t in ts:
-#            t.join()
+
 #-----------------------------------------------------------------------------#
     def Torque_enable(self, DXL_ID):
         dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_AX_TORQUE_ENABLE, DXL_ENABLE)
