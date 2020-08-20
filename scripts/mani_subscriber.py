@@ -96,7 +96,7 @@ class Dynamixel_Motor_control:
 #------------------------------sync drive-------------------------------------#
 
     def Sync_write(self, msg):
-        pl = [Process(target=self.Write_motor, args=(msg.id[q], msg.spd[q], msg.sec[q])) for q in self.connected_motor]
+        pl = [Process(target=self.Write_motor, args=(msg.id[q], msg.speed[q], msg.second[q])) for q in self.connected_motor]
         for w in pl:
             w.start()
         for w in pl:
