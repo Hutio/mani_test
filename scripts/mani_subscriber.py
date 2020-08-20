@@ -16,12 +16,6 @@ BAUDRATE                   = 1000000
 DEVICENAME                 = '/dev/ttyUSB0'
 LEN_MOTOR_SCAN             = 4
 
-Mdata = [
-         [0,1,2,3], #Motor number
-         [300,1624,200,1424], #Motor speed
-         [5,2,4,3] #Motor duration
-         ]
-
 #--------------------------------Don't touch----------------------------------#
 # Motor Address
 ADDR_AX_TORQUE_ENABLE      = 24
@@ -76,8 +70,8 @@ def Dynamixel_Ping(DXL_ID):
 
 class Dynamixel_Motor_control:
 
-    def __init__(self, connected_motor, LEN_MOTOR_SCAN, Mdata):
-        self.Mdata = Mdata
+    def __init__(self, connected_motor, LEN_MOTOR_SCAN):
+        
         self.connected_motor = connected_motor
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 
@@ -161,7 +155,7 @@ if __name__ == '__main__':
     Dynamixel_Open_port()
     Dynamixel_Set_baudrate()
 
-    dmc = Dynamixel_Motor_control(connected_motor,LEN_MOTOR_SCAN, Mdata)
+    dmc = Dynamixel_Motor_control(connected_motor,LEN_MOTOR_SCAN)
 
     dmc.Motor_enable()
 
