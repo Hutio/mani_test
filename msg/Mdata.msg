@@ -1,3 +1,3 @@
 int32[] id
-float32[] speed
-float32[] second
+int32[] speed
+int32[] second
