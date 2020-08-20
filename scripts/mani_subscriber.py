@@ -29,7 +29,6 @@ DXL_DISABLE                = 0
 connected_motor = []
 portHandler = PortHandler(DEVICENAME)
 packetHandler = PacketHandler(PROTOCOL_VERSION)
-
 #-----------------------------------------------------------------------------#
 
 def Dynamixel_Open_port():
@@ -72,7 +71,7 @@ class Dynamixel_Motor_control:
 
         self.connected_motor = connected_motor
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
-        Mdata = []
+
 #----------------------------only sequential ---------------------------------#
     def Write_motor(self, DXL_ID, spd, sec):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, spd)
@@ -96,8 +95,8 @@ class Dynamixel_Motor_control:
         print("[ID:%03d] PresSpd:%03d" % (DXL_ID,dxl_present_speed))
 #------------------------------sync drive-------------------------------------#
 
-    def Sync_write(self, Mdata):
-        pl = [Process(target=self.Write_motor, args=(Mdata[0][q], Mdata[1][q], Mdata[2][q])) for q in self.connected_motor]
+    def Sync_write(self, msg):
+        pl = [Process(target=self.Write_motor, args=(msg.id[q], msg.speed[q], msg.second[q])) for q in self.connected_motor]
         for w in pl:
             w.start()
         for w in pl:
@@ -136,12 +135,7 @@ def Dynamixel_Close_port():
 
 def callback(msg):
     rospy.loginfo(rospy.get_caller_id() + "I heard %s", msg)
-
-    Mdata[0].append(msg.id)
-    Mdata[1].append(msg.speed)
-    Mdata[2].append(msg.second)
-
-    dmc.Sync_write(Mdata)
+    dmc.Sync_write(msg)
 
 def listener():
 
