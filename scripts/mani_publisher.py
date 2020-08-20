@@ -44,11 +44,13 @@ def talker():
     rospy.init_node('mani_test_publisher', anonymous=False)
     rate = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
-        Mdata = [
-                 [0,1,2,3], #Motor number
-                 [300,1624,200,1424], #Motor speed
-                 [5,2,4,3] #Motor duration
-                 ]
+
+        msg = std_msgs.msg.Float32MultiArray()
+        msg.data = [
+                     [0,1,2,3], #Motor number
+                     [300,1624,200,1424], #Motor speed
+                     [5,2,4,3] #Motor duration
+                    ]
         rospy.loginfo(Mdata)
         pub.publish(Mdata)
         rate.sleep(1000000)
