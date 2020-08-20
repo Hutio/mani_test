@@ -89,6 +89,7 @@ class Dynamixel_Motor_control:
         elif dxl_error != 0:
             print("%s" % packetHandler.getRxPacketError(dxl_error))
         time.sleep(sec)
+        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
 
     def Stop_motor(self, DXL_ID):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
@@ -169,7 +170,7 @@ if __name__ == '__main__':
 #    listener()
 
     dmc.Sync_write(Mdata)
-    time.sleep(20)
+
     dmc.Motor_disable()
 
     Dynamixel_Close_port()
