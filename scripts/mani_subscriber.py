@@ -82,7 +82,7 @@ class Dynamixel_Motor_control:
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 
 #----------------------------only sequential ---------------------------------#
-    def Write_motor(self, DXL_ID, spd, sec):
+    def Write_motor(self, DXL_ID, spd):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, spd)
         if dxl_comm_result != COMM_SUCCESS:
             print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
@@ -104,13 +104,11 @@ class Dynamixel_Motor_control:
 
     def Sync_write(self, Mdata):
         for q in self.connected_motor:
-            self.Write_motor(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q])
-            threading.Timer(self.Mdata[2][q], self.Stop_motor(q)).start()
-#        for t in ts:
-#            print(t)
-#            t.start()
-#        for t in ts:
-#            t.join()
+            self.Write_motor(self.Mdata[0][q], self.Mdata[1][q])
+        pool = multiprocessing.Pool(processes=len(self.connected_motor))
+        pool.map(self.Stop_motor, self.Mdata[2][q])
+        pool.close()
+        pool.join()
 #-----------------------------------------------------------------------------#
     def Torque_enable(self, DXL_ID):
         dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_AX_TORQUE_ENABLE, DXL_ENABLE)
