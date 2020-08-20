@@ -18,7 +18,7 @@ LEN_MOTOR_SCAN             = 4
 
 Mdata = [
          [0,1,2,3], #Motor number
-         [300,1324,300,1324], #Motor speed
+         [100,1124,100,1124], #Motor speed
          [1,2,3,4] #Motor duration
          ]
 
@@ -82,12 +82,14 @@ class Dynamixel_Motor_control:
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 
 #----------------------------only sequential ---------------------------------#
-    def Write_motor(self, DXL_ID, spd):
+    def Write_motor(self, DXL_ID, spd, sec):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, spd)
         if dxl_comm_result != COMM_SUCCESS:
             print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
         elif dxl_error != 0:
             print("%s" % packetHandler.getRxPacketError(dxl_error))
+        time.sleep(sec)
+        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
 
     def Stop_motor(self, DXL_ID):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
@@ -103,12 +105,11 @@ class Dynamixel_Motor_control:
 #------------------------------sync drive-------------------------------------#
 
     def Sync_write(self, Mdata):
-        for q in self.connected_motor:
-            self.Write_motor(self.Mdata[0][q], self.Mdata[1][q])
-        pool = multiprocessing.Pool(processes=len(self.connected_motor))
-        pool.map(self.Stop_motor, self.Mdata[2])
-        pool.close()
-        pool.join()
+        pl = [Process(target=self.Write_motor args=(Mdata[0][q], Mdata[1][q], Mdata[2][q])) for q in self.connected_motor]
+        for w in pl:
+            w.start()
+        for w in pl:
+            w.join()
 #-----------------------------------------------------------------------------#
     def Torque_enable(self, DXL_ID):
         dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_AX_TORQUE_ENABLE, DXL_ENABLE)
