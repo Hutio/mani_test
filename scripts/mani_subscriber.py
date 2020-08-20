@@ -3,6 +3,7 @@
 
 #----------------------------------Lib----------------------------------------#
 import rospy
+import threading
 from multiprocessing import Process
 from std_msgs.msg import Float32MultiArray
 from dynamixel_sdk import *
@@ -87,8 +88,9 @@ class Dynamixel_Motor_control:
             print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
         elif dxl_error != 0:
             print("%s" % packetHandler.getRxPacketError(dxl_error))
-        time.sleep(sec)
-#        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
+
+    def Stop_motor(self, DXL_ID):
+        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
 
     def Read_motor(DXL_ID):
         dxl_present_speed, dxl_comm_result, dxl_error = packetHandler.read2ByteTxRx(portHandler, DXL_ID, ADDR_AX_PRESENT_SPEED)
@@ -102,9 +104,8 @@ class Dynamixel_Motor_control:
 
     def Sync_write(self, Mdata):
         for q in self.connected_motor:
-            Process(target=self.Write_motor(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q])).start()
-#        ts = [threading.Timer(self.Mdata[2][w], self.Stop_motor(w))\
-#        for w in self.connected_motor]
+            self.Write_motor(self.Mdata[0][q], self.Mdata[1][q], self.Mdata[2][q])
+            threading.Timer(self.Mdata[2][q], self.Stop_motor(q)).start()
 #        for t in ts:
 #            print(t)
 #            t.start()
