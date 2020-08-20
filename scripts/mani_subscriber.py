@@ -18,7 +18,7 @@ LEN_MOTOR_SCAN             = 4
 
 Mdata = [
          [0,1,2,3], #Motor number
-         [100,1124,100,1124], #Motor speed
+         [300,1324,300,1324], #Motor speed
          [1,2,3,4] #Motor duration
          ]
 
