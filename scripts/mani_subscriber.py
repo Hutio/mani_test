@@ -106,7 +106,7 @@ class Dynamixel_Motor_control:
         for q in self.connected_motor:
             self.Write_motor(self.Mdata[0][q], self.Mdata[1][q])
         pool = multiprocessing.Pool(processes=len(self.connected_motor))
-        pool.map(self.Stop_motor, self.Mdata[2][q])
+        pool.map(self.Stop_motor, self.Mdata[2])
         pool.close()
         pool.join()
 #-----------------------------------------------------------------------------#
