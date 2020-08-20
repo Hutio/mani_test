@@ -3,7 +3,6 @@
 
 #----------------------------------Lib----------------------------------------#
 import rospy
-import threading
 from multiprocessing import Process
 from std_msgs.msg import Float32MultiArray
 from dynamixel_sdk import *
@@ -19,7 +18,7 @@ LEN_MOTOR_SCAN             = 4
 Mdata = [
          [0,1,2,3], #Motor number
          [300,1324,300,1324], #Motor speed
-         [5,10,15,20] #Motor duration
+         [1,2,3,4] #Motor duration
          ]
 
 #--------------------------------Don't touch----------------------------------#
@@ -89,10 +88,7 @@ class Dynamixel_Motor_control:
         elif dxl_error != 0:
             print("%s" % packetHandler.getRxPacketError(dxl_error))
         time.sleep(sec)
-        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
-
-    def Stop_motor(self, DXL_ID):
-        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
+#        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_MOVING_SPEED, DXL_DISABLE)
 
     def Read_motor(DXL_ID):
         dxl_present_speed, dxl_comm_result, dxl_error = packetHandler.read2ByteTxRx(portHandler, DXL_ID, ADDR_AX_PRESENT_SPEED)
