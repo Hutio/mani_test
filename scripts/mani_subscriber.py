@@ -4,7 +4,7 @@
 #----------------------------------Lib----------------------------------------#
 import rospy
 import threading
-import multiprocessing
+from multiprocessing import Process
 from std_msgs.msg import Float32MultiArray
 from dynamixel_sdk import *
 
