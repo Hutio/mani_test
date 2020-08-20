@@ -105,14 +105,14 @@ class Dynamixel_Motor_control:
     def Sync_write(self, Mdata):
         for q in self.connected_motor:
             self.Write_motor(self.Mdata[0][q], self.Mdata[1][q])
-        ts = [threading.Timer(self.Mdata[2][w], self.Stop_motor(w))\
-        for w in self.connected_motor]
-
-        for t in ts:
-            print("t")
-            t.start()
-        for t in ts:
-            t.join()
+#        ts = [threading.Timer(self.Mdata[2][w], self.Stop_motor(w))\
+#        for w in self.connected_motor]
+#
+#        for t in ts:
+#            print("t")
+#            t.start()
+#        for t in ts:
+#            t.join()
 
 #-----------------------------------------------------------------------------#
     def Torque_enable(self, DXL_ID):
