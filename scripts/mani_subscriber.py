@@ -1,11 +1,9 @@
 
 #!/usr/bin/env python
 
-#----------------------------------Lib----------------------------------------#
 import rospy
-import threading
+from mani_test.msg import Mdata
 from multiprocessing import Process
-from std_msgs.msg import Float32MultiArray
 from dynamixel_sdk import *
 
 #--------------------------------Settings-------------------------------------#
@@ -31,7 +29,7 @@ DXL_DISABLE                = 0
 connected_motor = []
 portHandler = PortHandler(DEVICENAME)
 packetHandler = PacketHandler(PROTOCOL_VERSION)
-
+msg = Mdata()
 #-----------------------------------------------------------------------------#
 
 def Dynamixel_Open_port():
@@ -71,7 +69,7 @@ def Dynamixel_Ping(DXL_ID):
 class Dynamixel_Motor_control:
 
     def __init__(self, connected_motor, LEN_MOTOR_SCAN):
-        
+
         self.connected_motor = connected_motor
         self.LEN_MOTOR_SCAN = LEN_MOTOR_SCAN
 
@@ -99,7 +97,7 @@ class Dynamixel_Motor_control:
 #------------------------------sync drive-------------------------------------#
 
     def Sync_write(self, Mdata):
-        pl = [Process(target=self.Write_motor, args=(Mdata[0][q], Mdata[1][q], Mdata[2][q])) for q in self.connected_motor]
+        pl = [Process(target=self.Write_motor, args=(msg_id[q], msg_spd[q], msg_sec[q])) for q in self.connected_motor]
         for w in pl:
             w.start()
         for w in pl:
@@ -136,8 +134,10 @@ class Dynamixel_Motor_control:
 def Dynamixel_Close_port():
     portHandler.closePort()
 
-def callback(data):
-    msg = data.data
+def callback(msg):
+    msg_id = msg.id
+    msg_spd = msg.speed
+    msg_sec = msg.second
     rospy.loginfo(rospy.get_caller_id() + "I heard %s", msg)
     dmc.Sync_write(msg)
 
@@ -145,7 +145,7 @@ def listener():
 
     rospy.init_node('mani_test_listener', anonymous=False)
 
-    rospy.Subscriber("Motor_data", Float32MultiArray, callback)
+    rospy.Subscriber("Motor_data", Mdata, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()

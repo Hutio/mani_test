@@ -37,23 +37,23 @@
 ## to the 'chatter' topic
 
 import rospy
-from std_msgs.msg import Float32MultiArray
+from mani_test.msg import Mdata
+
+msg = Mdata()
 
 def talker():
-    pub = rospy.Publisher("Motor_data", Float32MultiArray, queue_size=10)
+    pub = rospy.Publisher("Motor_data", Mdata, queue_size=1)
     rospy.init_node('mani_test_publisher', anonymous=False)
     rate = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
 
-        msg = std_msgs.msg.Float32MultiArray()
-        msg.data = [
-                     [0,1,2,3], #Motor number
-                     [300,1624,200,1424], #Motor speed
-                     [5,2,4,3] #Motor duration
-                    ]
-        rospy.loginfo(Mdata)
-        pub.publish(Mdata)
-        rate.sleep(1000000)
+        msg.id      = [0,1,2,3]
+        msg.speed   = [300,1624,200,1424]
+        msg.second  = [5,2,4,3]
+
+        rospy.loginfo(msg)
+        pub.publish(msg)
+        rate.sleep()
 
 if __name__ == '__main__':
     try:
