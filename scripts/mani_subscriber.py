@@ -107,9 +107,9 @@ class Dynamixel_Motor_control:
             self.Write_motor(self.Mdata[0][q], self.Mdata[1][q])
         ts = [threading.Timer(self.Mdata[2][w], self.Stop_motor(w))\
         for w in self.connected_motor]
-
+        print(ts)
         for t in ts:
-            print("t")
+            print(t)
             t.start()
         for t in ts:
             t.join()
