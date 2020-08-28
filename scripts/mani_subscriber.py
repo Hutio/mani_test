@@ -2,7 +2,6 @@
 #!/usr/bin/env python
 
 import rospy
-from mani_test.msg import Mdata
 from multiprocessing import Process
 from dynamixel_sdk import *
 
