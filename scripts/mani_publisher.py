@@ -1,10 +1,4 @@
-#!/usr/bin/env python2
-# 
-#
-#
-
-## Simple talker demo that published std_msgs/Strings messages
-## to the 'chatter' topic
+#!/usr/bin/env python
 
 import rospy
 from mani_test.msg import Mdata

@@ -13,12 +13,13 @@ BAUDRATE                   = 1000000
 DEVICENAME                 = '/dev/ttyUSB0'
 LEN_MOTOR_SCAN             = 4
 
-#--------------------------------Don't touch----------------------------------#
 # Motor Address
 ADDR_AX_TORQUE_ENABLE      = 24
 ADDR_AX_MOVING_SPEED       = 32
 ADDR_AX_PRESENT_SPEED      = 38
 ADDR_AX_LIGHT              = 25
+
+#--------------------------------Don't touch----------------------------------#
 
 COMM_SUCCESS               = 0
 
